@@ -1,30 +1,18 @@
 # goodreads-elt-pipeline
 
-For Vietnamese edition, please visit <https://lelouvincx.github.io/projects/fde2-goodreads-elt-pipeline/>
-
 In this project, I will guide you on building a basic data pipeline using the ELT model (extract - load - transform), using the dataset from Goodreads to ingest and transform data to serve a book recommendation system for yourself.
 
-This project is completed based on the knowledge learned from the Fundamental Data Engineering 02 course of AIDE. Special thanks to Mr. Nguyen Thanh Binh, Mr. Ong Xuan Hong, and Mr. Hung Le.
+This project is completed based on the knowledge learned from the Fundamental Data Engineering 03 course of AIDE. Special thanks to Mr. Nguyen Thanh Binh, Mr. Ong Xuan Hong, and Mr. Hung Le.
 
-## 1. Introduction
-
-I love reading books, and I have a Kindle e-reader for my daily reading.
-
-![](./images/introduction.jpg)
-
-One thing I like about the Kindle is that it has a separate email address provided by Amazon. If I use my own email to send e-book files (in .epub/.mobi format), the Amazon system will automatically send the files to my Kindle as long as there is an internet connection.
-
-So why not build an app that can extract data from Goodreads (a social network for book lovers), process it, and provide recommendations for my next reads? And that's where the project begins :D
-
-## 2. Objective
+## 1. Objective
 
 Dataset is collected from [Kaggle](https://www.kaggle.com/datasets/bahramjannesarr/goodreads-book-datasets-10m), [OpenLibrary API](https://openlibrary.org), [Google Drive API](https://developers.google.com/drive) and [Notion API](https://www.notion.so/lelouvincx/9dca269701b44d6b944c51a7f63b5b5a?v=4852b4d5cf8440e4bc232b0e25327f93)
 
 The objective of the project is to provide book recommendations to users based on the processed data collected. When a user inputs information about a book they have read, the app will suggest potential next reads. If the book has an .epub file, the app will also have a feature to send the book to the user's Kindle.
 
-## 3. Design
+## 2. Design
 
-### 3.1 Directory tree
+### 2.1 Directory tree
 
 ![](./images/directory_tree.png)
 
@@ -55,7 +43,7 @@ In addition, the containers also have their own separate directories, which incl
 
 Visit file [tree.txt](https://github.com/lelouvincx/goodreads-elt-pipeline/blob/main/tree.txt) for more details.
 
-### 3.2 Pipeline design
+### 2.2 Pipeline design
 
 ![](./images/design_pipeline.png "Pipeline Design")
 
@@ -74,7 +62,7 @@ Visit file [tree.txt](https://github.com/lelouvincx/goodreads-elt-pipeline/blob/
 8. Visualize the data using `metabase`
 9. Create a book recommendation app using `streamlit`
 
-### 3.3 Database schema
+### 2.3 Database schema
 
 ![](./images/design_schema.png)
 
@@ -85,7 +73,7 @@ Visit file [tree.txt](https://github.com/lelouvincx/goodreads-elt-pipeline/blob/
 5. `files`: object storage contains books' download files (.epub/.pdf/.mobi)
 6. `images`: object storage contains books' images
 
-### 3.4 Datalake structure
+### 2.4 Datalake structure
 
 ![](./images/datalake_structure.png "Datalake Structure")
 
@@ -94,7 +82,7 @@ Visit file [tree.txt](https://github.com/lelouvincx/goodreads-elt-pipeline/blob/
 3. There are also `files` that stores .epub files in the format of abc.epub, where abc is the ISBN of the book.
 4. Similarly, abc.jpeg stores the image of the book.
 
-### 3.5 Data lineage
+### 2.5 Data lineage
 
 1. General
 
@@ -164,9 +152,9 @@ Includes these assets:
 - search_prior: Also an index table, but contains books that are given priority based on factors such as availability of download links, functionality of the OpenLibrary API, high ratings, etc.
 - criteria: Criteria used to query related books when searching for a specific book.
 
-## 4. Setup
+## 3. Setup
 
-### 4.1 Prequisites
+### 3.1 Prequisites
 
 To develop this pipeline, download and install these softwares:
 
@@ -188,7 +176,7 @@ cd project
 
 Download the csv dataset [here](https://www.kaggle.com/datasets/lelouvincx/goodreads-elt-pipeline?select=book.csv), then place it in `project/dataset`
 
-### 4.2 Setup google drive api
+### 3.2 Setup google drive api
 
 Firstly we need to create an OAuth 2.0 token to google, [Google API Console](https://console.developers.google.com/).
 
@@ -234,7 +222,7 @@ Download json and place in `project/elt_pipeline/elt_pipeline`
 
 ![](./images/gdrive_11.png)
 
-### 4.3 Setup local infrastructure
+### 3.3 Setup local infrastructure
 
 Clone repository:
 
@@ -375,7 +363,7 @@ Check there's 11 running services:
 - Metabase: 3030
 - Streamlit: 8501
 
-### 4.4 Import data into MySQL
+### 3.4 Import data into MySQL
 
 Now we import the Goodreads dataset (unser csv format) into MySQL:
 
@@ -398,13 +386,13 @@ make mysql_create
 make mysql_load
 ```
 
-### 4.5 Create schema in Postgres
+### 3.5 Create schema in Postgres
 
 ```bash
 make psql_create
 ```
 
-### 4.6 User interfaces
+### 3.6 User interfaces
 
 1. <http://localhost:3001> - Dagit
 2. <http://localhost:4040> - Spark jobs
@@ -413,7 +401,7 @@ make psql_create
 5. <http://localhost:3030> - Metabase
 6. <http://localhost:8501> - Streamlit
 
-## 5. Considerations
+## 4. Considerations
 
 Evaluation of the project:
 
@@ -422,7 +410,7 @@ Evaluation of the project:
 3. `dbt` is currently a small project, and in the future, if more transformations are needed, it should be split into separate services with different permissions.
 4. Deployment: Using one of the cloud computing services such as AWS, Azure, GCP.
 
-## 6. Further actions
+## 5. Further actions
 
 1. Complete the recommender system
 2. Integrate Jupyter Notebook for DS tasks - [dagstermill](https://docs.dagster.io/integrations/dagstermill)
